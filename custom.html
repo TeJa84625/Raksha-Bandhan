@@ -1,0 +1,644 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raksha Bandhan QR</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #9d4edd;
+            --secondary: #7b2cbf;
+            --accent: #f72585;
+            --gold: #f4d35e;
+            --dark-bg: #07050a;
+            --glass-bg: rgba(18, 14, 27, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #f8f9fa;
+            --text-muted: #adb5bd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            background: radial-gradient(circle at 50% 20%, #1c1033 0%, var(--dark-bg) 100%);
+            background-attachment: fixed;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 16px;
+            position: relative;
+        }
+
+        .ambient-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            max-width: 600px;
+            max-height: 600px;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .admin-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            margin: auto;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .badge {
+            background: rgba(244, 211, 94, 0.1);
+            color: var(--gold);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 8px;
+            border: 1px solid rgba(244, 211, 94, 0.2);
+            display: inline-block;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.82rem;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 55px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.3);
+        }
+
+        select option {
+            background: #1c1033;
+            color: var(--text-main);
+        }
+
+        .row-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row-group .form-group {
+            flex: 1;
+        }
+
+        .dynamic-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            padding: 10px 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Advanced Toggle Section */
+        .advanced-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0;
+        }
+
+        .advanced-options {
+            display: none;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .color-picker-wrapper input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+
+        .color-picker-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker-wrapper input[type="color"]::-webkit-color-swatch {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        .security-note {
+            font-size: 0.65rem;
+            color: #ffb703;
+            margin-top: 5px;
+            line-height: 1.3;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(247, 37, 133, 0.4);
+            width: 100%;
+            margin-top: 6px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn-main:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(244, 211, 94, 0.3);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-box h3 {
+            font-size: 0.78rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .btn-action-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 12px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="admin-container">
+        <div class="badge">✨ QR & Link Generator</div>
+        <h1>Raksha Bandhan 2026</h1>
+        <p class="subtitle">Customize your scratch card reward & download custom QR</p>
+
+        <form id="rakhiForm" onsubmit="generateQR(event)">
+            
+            <!-- Step 1: Core Identities -->
+            <div class="row-group">
+                <div class="form-group">
+                    <label for="gender">To Whom?</label>
+                    <select id="gender" onchange="updateLabels()">
+                        <option value="m">Brother</option>
+                        <option value="f">Sister</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age Status</label>
+                    <select id="age">
+                        <option value="o">Older</option>
+                        <option value="y">Younger</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row-group">
+                <div class="form-group">
+                    <label for="recipient" id="labelRecipient">Brother's Name</label>
+                    <input type="text" id="recipient" placeholder="e.g. Rahul" required>
+                </div>
+                <div class="form-group">
+                    <label for="sender">Sender Name</label>
+                    <input type="text" id="sender" placeholder="e.g. Priya" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lang">Greeting Language</label>
+                <select id="lang">
+                    <option value="en">English</option>
+                    <option value="tel">Telugu (తెలుగు)</option>
+                    <option value="hin">Hindi (हिंदी)</option>
+                    <option value="tam">Tamil (தமிழ்)</option>
+                    <option value="kan">Kannada (ಕನ್ನಡ)</option>
+                    <option value="mal">Malayalam (മലയാളം)</option>
+                    <option value="ben">Bengali (বাংলা)</option>
+                    <option value="mar">Marathi (मराठी)</option>
+                </select>
+            </div>
+
+            <!-- Step 2: Scratch Card Reward Type -->
+            <div class="form-group">
+                <label for="scratchType">Scratch Card Reveal Content</label>
+                <select id="scratchType" onchange="renderScratchInput()">
+                    <option value="amount">Cash / E-Voucher Amount (₹)</option>
+                    <option value="msg">Custom Secret Message 💌</option>
+                </select>
+            </div>
+
+            <div class="dynamic-block" id="scratchInputContainer">
+                <!-- Dynamically updated input -->
+            </div>
+
+            <!-- Step 3: Action Button Behavior -->
+            <div class="form-group">
+                <label for="actionType">Post-Reveal Claim Button Action</label>
+                <select id="actionType" onchange="renderActionInputs()">
+                    <option value="none">None (Hide Button)</option>
+                    <option value="call">Direct Call 📞</option>
+                    <option value="whatsapp">WhatsApp Message 💬</option>
+                    <option value="url">Custom Web URL 🔗</option>
+                    <option value="upi">Direct UPI Payment 💸</option>
+                </select>
+            </div>
+
+            <div class="dynamic-block" id="actionInputContainer">
+                <!-- Dynamically updated action inputs -->
+            </div>
+
+            <!-- Advanced QR Options Accordion -->
+            <button type="button" class="advanced-toggle-btn" onclick="toggleAdvancedOptions()">
+                ⚙️ <span id="toggleText">Show Advanced QR Customization</span>
+            </button>
+
+            <div class="advanced-options" id="advancedOptionsContainer">
+                <div class="form-group">
+                    <label for="qrPattern">Pattern Style</label>
+                    <select id="qrPattern">
+                        <option value="classy-rounded">Classy Rounded</option>
+                        <option value="rounded">Default (Rounded)</option>
+                        <option value="dots">Dots</option>
+                        <option value="square">Square</option>
+                        <option value="classy">Classy</option>
+                        <option value="extra-rounded">Extra Rounded</option>
+                    </select>
+                </div>
+
+                <div class="row-group">
+                    <div class="form-group">
+                        <label for="qrFgHex">Foreground (fg)</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="qrFgPicker" value="#9d4edd" onchange="syncColorInput('picker', 'text')">
+                            <input type="text" id="qrFgHex" value="9d4edd" placeholder="9d4edd" oninput="syncColorInput('text', 'picker')">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="qrBgHex">Background (bg)</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="qrBgPicker" value="#ffffff" onchange="syncColorInput('bgPicker', 'bgText')">
+                            <input type="text" id="qrBgHex" value="ffffff" placeholder="ffffff" oninput="syncColorInput('bgText', 'bgPicker')">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-group">
+                    <div class="form-group">
+                        <label for="qrSize">Size (px)</label>
+                        <input type="number" id="qrSize" value="400" placeholder="400">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="qrCenterImg">Center Image (Logo URL)</label>
+                    <input type="url" id="qrCenterImg" placeholder="https://example.com/logo.png">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-main">Generate Custom QR Code 🔲</button>
+        </form>
+
+        <div class="result-box" id="resultBox">
+            <h3>✨ Your QR Code is Ready!</h3>
+            <div class="btn-action-row">
+                <a href="#" id="previewBtn" target="_blank" class="btn-secondary">👁️ Preview Card</a>
+                <a href="#" id="downloadQrBtn" target="_blank" class="btn-secondary" style="background: linear-gradient(135deg, var(--accent), var(--primary)); border: none;">📥 Download QR Code</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateLabels() {
+            const gender = document.getElementById('gender').value;
+            document.getElementById('labelRecipient').innerText = gender === 'm' ? "Brother's Name" : "Sister's Name";
+        }
+
+        function toggleAdvancedOptions() {
+            const container = document.getElementById('advancedOptionsContainer');
+            const toggleText = document.getElementById('toggleText');
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+                toggleText.innerText = 'Show Advanced QR Customization';
+            } else {
+                container.style.display = 'block';
+                toggleText.innerText = 'Hide Advanced QR Customization';
+            }
+        }
+
+        function syncColorInput(source, target) {
+            if (source === 'picker') {
+                document.getElementById('qrFgHex').value = document.getElementById('qrFgPicker').value.replace('#', '');
+            } else if (source === 'text') {
+                let val = document.getElementById('qrFgHex').value.trim();
+                if (/^([0-9A-F]{3}){1,2}$/i.test(val)) {
+                    document.getElementById('qrFgPicker').value = '#' + val;
+                }
+            } else if (source === 'bgPicker') {
+                document.getElementById('qrBgHex').value = document.getElementById('qrBgPicker').value.replace('#', '');
+            } else if (source === 'bgText') {
+                let val = document.getElementById('qrBgHex').value.trim();
+                if (/^([0-9A-F]{3}){1,2}$/i.test(val)) {
+                    document.getElementById('qrBgPicker').value = '#' + val;
+                }
+            }
+        }
+
+        function renderScratchInput() {
+            const type = document.getElementById('scratchType').value;
+            const container = document.getElementById('scratchInputContainer');
+            
+            if (type === 'amount') {
+                container.innerHTML = `
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="scratchAmountVal">Enter Amount Value</label>
+                        <input type="text" id="scratchAmountVal" value="1,000" maxlength="8" placeholder="e.g. 1,000" required>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="scratchMsgVal">Secret Hidden Message (Max 120 chars)</label>
+                        <textarea id="scratchMsgVal" maxlength="120" placeholder="Type a sweet surprise message here..." required></textarea>
+                    </div>
+                `;
+            }
+        }
+
+        function renderActionInputs() {
+            const actionType = document.getElementById('actionType').value;
+            const container = document.getElementById('actionInputContainer');
+
+            if (actionType === 'call') {
+                container.innerHTML = `
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="actPhone">Phone Number</label>
+                        <input type="tel" id="actPhone" maxlength="15" placeholder="e.g. +919876543210" required>
+                    </div>
+                `;
+            } else if (actionType === 'whatsapp') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label for="actWaPhone">WhatsApp Number</label>
+                        <input type="tel" id="actWaPhone" maxlength="15" placeholder="e.g. 919876543210" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="actWaMsg">Preset Chat Message</label>
+                        <textarea id="actWaMsg" maxlength="150" placeholder="Thank you for the Rakhi wishes!"></textarea>
+                    </div>
+                `;
+            } else if (actionType === 'url') {
+                container.innerHTML = `
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="actUrlVal">Destination Web Link</label>
+                        <input type="url" id="actUrlVal" placeholder="https://example.com" required>
+                    </div>
+                `;
+            } else if (actionType === 'upi') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label for="actUpiId">UPI ID / VPA</label>
+                        <input type="text" id="actUpiId" maxlength="40" placeholder="e.g. username@oksbi" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="actUpiAmount">UPI Payment Amount (₹)</label>
+                        <input type="text" id="actUpiAmount" value="1,000" maxlength="8" placeholder="e.g. 1,000" required>
+                        <div class="security-note">⚠️ Note: Ensure your UPI ID is accurate. Transaction notes are auto-generated securely behind the scenes.</div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `<p style="font-size:0.7rem; color:var(--text-muted); text-align:center; margin:0;">No action button will appear after scratching.</p>`;
+            }
+        }
+
+        renderScratchInput();
+        renderActionInputs();
+
+        function generateQRUrl(config) {
+            const baseUrl = "https://qrzip.vercel.app/qrgen.html";
+            const params = new URLSearchParams();
+
+            if (config.styling) {
+                Object.keys(config.styling).forEach(key => {
+                    if (config.styling[key]) {
+                        params.append(key, config.styling[key]);
+                    }
+                });
+            }
+
+            const payload = typeof config.data === "string" ? config.data : config.data.payload;
+            const stylingQuery = params.toString();
+            return stylingQuery ? `${baseUrl}?${encodeURIComponent(payload)}&${stylingQuery}` : `${baseUrl}?${encodeURIComponent(payload)}`;
+        }
+
+        function generateQR(event) {
+            event.preventDefault();
+
+            const recipient = document.getElementById('recipient').value.trim();
+            const sender = document.getElementById('sender').value.trim();
+            
+            if (!recipient || !sender) {
+                alert('Please fill in the required details!');
+                return;
+            }
+
+            const lang = document.getElementById('lang').value;
+            const gender = document.getElementById('gender').value;
+            const age = document.getElementById('age').value;
+            const scratchType = document.getElementById('scratchType').value;
+            const actionType = document.getElementById('actionType').value;
+
+            // Advanced QR Settings
+            const qrPattern = document.getElementById('qrPattern').value;
+            const qrFg = document.getElementById('qrFgHex').value.trim() || '9d4edd';
+            const qrBg = document.getElementById('qrBgHex').value.trim() || 'ffffff';
+            const qrSize = document.getElementById('qrSize').value.trim() || '400';
+            const qrCenterImg = document.getElementById('qrCenterImg').value.trim();
+
+            let amountVal = '1,000';
+            if (scratchType === 'amount') {
+                amountVal = document.getElementById('scratchAmountVal').value.trim();
+            } else {
+                amountVal = document.getElementById('scratchMsgVal').value.trim();
+            }
+
+            let finalActionUrl = '';
+            if (actionType === 'call') {
+                finalActionUrl = `tel:${document.getElementById('actPhone').value.trim()}`;
+            } else if (actionType === 'whatsapp') {
+                const phone = document.getElementById('actWaPhone').value.trim();
+                const msg = encodeURIComponent(document.getElementById('actWaMsg').value.trim());
+                finalActionUrl = `https://wa.me/${phone}${msg ? '?text=' + msg : ''}`;
+            } else if (actionType === 'url') {
+                finalActionUrl = document.getElementById('actUrlVal').value.trim();
+            } else if (actionType === 'upi') {
+                const upiId = document.getElementById('actUpiId').value.trim();
+                const upiAmount = document.getElementById('actUpiAmount').value.trim();
+                const cleanAmt = upiAmount.replace(/,/g, '');
+                
+                const autoNote = encodeURIComponent(`Raksha Bandhan 2026 - To: ${recipient}, From: ${sender}`);
+                finalActionUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(recipient)}&am=${cleanAmt}&cu=INR&tn=${autoNote}`;
+            }
+
+            const params = new URLSearchParams();
+            if (recipient) params.set('t', recipient);
+            if (sender) params.set('f', sender);
+            if (amountVal) params.set('a', amountVal);
+            if (scratchType === 'msg') params.set('st', 'msg');
+            if (lang && lang !== 'en') params.set('l', lang);
+            if (gender && gender !== 'm') params.set('g', gender);
+            if (age && age !== 'o') params.set('ag', age);
+            if (finalActionUrl) params.set('u', finalActionUrl);
+
+            const greetingLink = `https://teja84625.github.io/Raksha-Bandhan/index.html?${params.toString()}`;
+
+            const qrApiUrl = generateQRUrl({
+                data: greetingLink,
+                styling: { 
+                    fg: qrFg, 
+                    bg: qrBg,
+                    style: qrPattern, 
+                    size: qrSize,
+                    image: qrCenterImg || ""
+                }
+            });
+
+            document.getElementById('previewBtn').href = greetingLink;
+            document.getElementById('downloadQrBtn').href = qrApiUrl;
+            
+            const resultBox = document.getElementById('resultBox');
+            resultBox.style.display = 'block';
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
