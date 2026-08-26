@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Raksha Bandhan 2026</title>
+    <title>Happy Raksha Bandhan</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Cinzel:wght@600;700&amp;display=swap" rel="stylesheet">
     <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"> </script>
 
     <style>
         :root {
@@ -223,17 +221,17 @@
     <div class="card-container">
         <div class="badge">✨ Raksha Bandhan Special</div>
         <h1>Happy Raksha Bandhan</h1>
-        <p class="subtitle" id="subTitle">To my dearest Sibling</p>
+        <p class="subtitle" id="subTitle">To my dearest Recipient (Brother)</p>
 
         <div class="message-box">
-            <span id="quoteText">"Thank you for always being my pillar of strength and support. Wishing you endless happiness!"</span>
-            <span class="sender-tag">— By <span id="senderRoleTag">Sender</span> <span id="fromNameTag">Sender</span></span>
+            <span id="quoteText">"From sharing childhood memories to cheering for each other's dreams—growing up with you has been the best adventure."</span>
+            <span class="sender-tag">— By <span id="senderRoleTag">Sister,</span> <span id="fromNameTag">Sender</span></span>
         </div>
 
         <div class="gift-box-wrapper">
             <!-- Initial Open Screen -->
             <div id="coverView">
-                <img src="https://media.istockphoto.com/id/1257015025/photo/indian-festival-raksha-bandhan-with-rakhi-bracelets-presents-rice-and-kumkum-in-bowls-copy.jpg?s=612x612&w=0&k=20&c=N_c9hh_9okasBvLRkcJ4wBvdvOoaNJ0bPEwGFske_h8=" alt="Rakhi" class="cover-img">
+                <img src="https://media.istockphoto.com/id/1257015025/photo/indian-festival-raksha-bandhan-with-rakhi-bracelets-presents-rice-and-kumkum-in-bowls-copy.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=N_c9hh_9okasBvLRkcJ4wBvdvOoaNJ0bPEwGFske_h8=" alt="Rakhi" class="cover-img">
                 <button class="btn-main" onclick="startScratch()">Tap to Open Gift 🎁</button>
             </div>
 
@@ -243,7 +241,7 @@
                 <div class="scratch-frame">
                     <div class="prize-layer">
                         <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">E-Voucher Gift</div>
-                        <div class="prize-amount" id="displayAmount">₹1.000 <span>INR</span></div>
+                        <div class="prize-amount" id="displayAmount">₹1,000 <span>INR</span></div>
                     </div>
                     <canvas id="scratchCanvas"></canvas>
                 </div>
@@ -255,7 +253,7 @@
             Claim the Gift ✨
         </a>
 
-        <div class="footer">Made with ❤️ by <strong id="footerName">Sender</strong></div>
+        <div class="footer">Made with ❤️ by <strong id="footerName">Sender (Sister)</strong></div>
     </div>
 
     <script>
@@ -298,6 +296,7 @@
         const lang = (urlParams.get('lang') || 'en').toLowerCase();
         const age = (urlParams.get('age') || 'o').toLowerCase(); // 'o' for older, 'y' for younger
         const gender = (urlParams.get('gender') || 'm').toLowerCase(); // 'm' = To Male (Brother) / From Female (Sister), 'f' = To Female (Sister) / From Male (Brother)
+        const customQuote = urlParams.get('quote');
 
         const storageKey = `rakhi_state_${btoa(currentQuery || 'default')}`;
 
@@ -368,8 +367,9 @@
             claimBtn.href = redirectUrl;
         }
 
-        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        document.getElementById('quoteText').innerText = `"${randomQuote}"`;
+        // Universal Quote Logic (Custom Query Param or Random Fallback)
+        const activeQuote = customQuote ? decodeURIComponent(customQuote) : quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quoteText').innerText = `"${activeQuote}"`;
 
         // Native audio setup
         let preloadedUtterance = null;
@@ -544,5 +544,5 @@
             window.addEventListener('touchend', () => isDrawing = false);
         }
     </script>
-</body>
-</html>
+
+</body></html>
