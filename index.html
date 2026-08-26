@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Raksha Bandhan 2026</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"> </script>
+
+    <style>
+        :root {
+            --primary: #9d4edd;
+            --secondary: #7b2cbf;
+            --accent: #f72585;
+            --gold: #f4d35e;
+            --dark-bg: #07050a;
+            --glass-bg: rgba(18, 14, 27, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #f8f9fa;
+            --text-muted: #adb5bd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 30%, #1c1033 0%, var(--dark-bg) 100%);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100svh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding: 16px;
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            max-width: 400px;
+            max-height: 400px;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .badge {
+            background: rgba(244, 211, 94, 0.1);
+            color: var(--gold);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            border: 1px solid rgba(244, 211, 94, 0.2);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            margin-bottom: 2px;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #e2e8f0;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .sender-tag {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.74rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .gift-box-wrapper {
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 125px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(247, 37, 133, 0.4);
+            width: 100%;
+        }
+
+        .scratch-view {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .scratch-instruction {
+            font-size: 0.74rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .scratch-frame {
+            position: relative;
+            width: 100%;
+            height: 145px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(244, 211, 94, 0.4);
+            background: #150f24;
+            margin-bottom: 12px;
+        }
+
+        .prize-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1233, #2b1847);
+        }
+
+        .prize-amount {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .prize-amount span {
+            font-size: 0.75rem;
+            color: var(--gold);
+        }
+
+        canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        .footer {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+        .footer strong { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="card-container">
+        <div class="badge">✨ Raksha Bandhan Special</div>
+        <h1 id="mainTitle">Happy Raksha Bandhan</h1>
+        <p class="subtitle" id="subTitle">To my dearest Sister</p>
+
+        <div class="message-box">
+            <span id="quoteText">"Thank you for always being my pillar of strength and support. Wishing you endless happiness!"</span>
+            <span class="sender-tag">— By your brother, <span id="fromNameTag">Brother</span></span>
+        </div>
+
+        <div class="gift-box-wrapper" id="giftWrapper">
+            <!-- Initial Open Screen -->
+            <div id="coverView">
+                <img src="https://media.istockphoto.com/id/1257015025/photo/indian-festival-raksha-bandhan-with-rakhi-bracelets-presents-rice-and-kumkum-in-bowls-copy.jpg?s=612x612&w=0&k=20&c=N_c9hh_9okasBvLRkcJ4wBvdvOoaNJ0bPEwGFske_h8=" alt="Rakhi" class="cover-img">
+                <button class="btn-main" onclick="startScratch()">Tap to Open Gift 🎁</button>
+            </div>
+
+            <!-- Scratch Card Screen -->
+            <div class="scratch-view" id="scratchView">
+                <div class="scratch-instruction">✨ Scratch thoroughly to reveal! ✨</div>
+                <div class="scratch-frame">
+                    <div class="prize-layer">
+                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">E-Voucher Gift</div>
+                        <div class="prize-amount" id="displayAmount">₹1.000 <span>INR</span></div>
+                    </div>
+                    <canvas id="scratchCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Claim Button -->
+        <a href="#" id="claimBtn" target="_blank" class="btn-main" style="display: none; text-decoration: none; margin-bottom: 12px;">
+            Claim the Gift ✨
+        </a>
+
+        <div class="footer">Made with ❤️ by <strong id="footerName">Brother</strong></div>
+    </div>
+
+    <script>
+        const quotes = [
+    "Having a sister is like having a lifelong friend you can never truly get rid of. No matter what, you know they'll always be there!",
+    "Side by side or miles apart, sisters are forever connected by the heart. Wishing you a wonderful Raksha Bandhan!",
+    "Thank you for sharing your patience, your secrets, and tolerating me every time. Happy Rakhi!",
+    "From sharing childhood memories to cheering for each other's dreams—growing up with you has been the best adventure.",
+    "Wishing you a joyous and prosperous Raksha Bandhan! May this festival strengthen our bond and bring endless success your way.",
+    "To the world's best sister: thanks for keeping my secrets, guiding me through life, and always having my back.",
+    "No matter how much we tease each other, you'll always be my favorite person to lean on. Happy Raksha Bandhan!",
+    "To a wonderful sister and guide: thank you for your constant support and wisdom through every chapter of life."
+];
+
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        const to = params.get('to') || 'Sister';
+        const from = params.get('from') || 'Brother';
+        const amount = params.get('amount') || '1,000';
+        const redirectUrl = params.get('url');
+
+        const storageKey = `rakhi_state_${btoa(queryString || 'default')}`;
+
+        document.getElementById('subTitle').innerText = `To my dearest sister, ${to}`;
+        document.getElementById('fromNameTag').innerText = from;
+        document.getElementById('footerName').innerText = from;
+        document.getElementById('displayAmount').innerHTML = `₹${amount} <span>INR</span>`;
+
+        const claimBtn = document.getElementById('claimBtn');
+        const hasValidUrl = redirectUrl && redirectUrl.trim() !== '';
+        if (hasValidUrl) {
+            claimBtn.href = redirectUrl;
+        }
+
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quoteText').innerText = `"${randomQuote}"`;
+
+        function triggerHaptic(pattern) {
+            if ('vibrate' in navigator) { try { navigator.vibrate(pattern); } catch (e) {} }
+        }
+
+        // Restore state check on page load
+        const savedState = localStorage.getItem(storageKey);
+
+        if (savedState === 'revealed') {
+            document.getElementById('coverView').style.display = 'none';
+            document.getElementById('scratchView').style.display = 'flex';
+            setTimeout(() => {
+                const canvas = document.getElementById('scratchCanvas');
+                if (canvas) canvas.remove();
+                if (hasValidUrl) claimBtn.style.display = 'block';
+            }, 50);
+        } else if (savedState === 'scratching') {
+            // Only skip cover if they actually started scratching before reloading
+            document.getElementById('coverView').style.display = 'none';
+            document.getElementById('scratchView').style.display = 'flex';
+            initCanvas(true);
+        }
+        // If state is 'cover' or null/empty, it stays safely on the cover view screen!
+
+        function startScratch() {
+            triggerHaptic([40, 60]);
+            // Do NOT save 'scratching' yet until an actual scratch stroke happens
+            localStorage.setItem(storageKey, 'cover');
+            document.getElementById('coverView').style.display = 'none';
+            document.getElementById('scratchView').style.display = 'flex';
+            initCanvas(false);
+        }
+
+        let initialized = false;
+        function initCanvas(restoreMode) {
+            if (initialized) return;
+            initialized = true;
+
+            const canvas = document.getElementById('scratchCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = 'https://media.istockphoto.com/id/1257015025/photo/indian-festival-raksha-bandhan-with-rakhi-bracelets-presents-rice-and-kumkum-in-bowls-copy.jpg?s=612x612&w=0&k=20&c=N_c9hh_9okasBvLRkcJ4wBvdvOoaNJ0bPEwGFske_h8=';
+            
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                ctx.fillStyle = 'rgba(7, 5, 10, 0.65)';
+                ctx.fillRect(0, 0, rect.width, rect.height);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 13px "Plus Jakarta Sans", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('⭐ SCRATCH TO REVEAL ⭐', rect.width / 2, rect.height / 2);
+
+                if (restoreMode) {
+                    const savedCanvasData = localStorage.getItem(storageKey + '_data');
+                    if (savedCanvasData) {
+                        const savedImg = new Image();
+                        savedImg.onload = () => {
+                            ctx.globalCompositeOperation = 'destination-out';
+                            ctx.drawImage(savedImg, 0, 0, rect.width, rect.height);
+                        };
+                        savedImg.src = savedCanvasData;
+                    }
+                }
+            };
+
+            let isDrawing = false, revealed = false;
+            let hapticCounter = 0;
+            let saveTimeout = null;
+
+            function saveProgressSnapshot() {
+                if (revealed) return;
+                // Mark state as 'scratching' now that actual scratches have begun
+                localStorage.setItem(storageKey, 'scratching');
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(() => {
+                    localStorage.setItem(storageKey + '_data', canvas.toDataURL());
+                }, 300);
+            }
+
+            function scratch(e) {
+                if (!isDrawing || revealed) return;
+                const r = canvas.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+                
+                hapticCounter++;
+                if (hapticCounter % 3 === 0) {
+                    triggerHaptic(12);
+                }
+
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 24, 0, Math.PI * 2);
+                ctx.fill();
+
+                saveProgressSnapshot();
+
+                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                let totalChecked = 0;
+                let cleared = 0;
+                
+                for (let i = 3; i < imgData.data.length; i += 16) {
+                    totalChecked++;
+                    if (imgData.data[i] === 0) cleared++;
+                }
+
+                if ((cleared / totalChecked) > 0.90) {
+                    revealAll();
+                }
+            }
+
+            function revealAll() {
+                if (revealed) return;
+                revealed = true;
+                localStorage.setItem(storageKey, 'revealed');
+                localStorage.removeItem(storageKey + '_data');
+
+                canvas.style.transition = 'opacity 0.6s';
+                canvas.style.opacity = '0';
+                setTimeout(() => canvas.remove(), 600);
+
+                triggerHaptic([60, 120, 180]);
+
+                if (hasValidUrl) {
+                    claimBtn.style.display = 'block';
+                }
+
+                confetti({ particleCount: 130, spread: 90, origin: { y: 0.6 } });
+            }
+
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            window.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); e.preventDefault(); }, {passive: false});
+            canvas.addEventListener('touchmove', (e) => { scratch(e); e.preventDefault(); }, {passive: false});
+            window.addEventListener('touchend', () => isDrawing = false);
+        }
+    </script>
+</body>
+</html>
