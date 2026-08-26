@@ -295,20 +295,66 @@
         const from = urlParams.get('from') || 'Brother';
         const amount = urlParams.get('amount') || '1,000';
         const redirectUrl = urlParams.get('url');
-        const lang = urlParams.get('lang') || 'en';
-        const age = urlParams.get('age') || 'o'; // 'o' for older, 'y' for younger
+        const lang = (urlParams.get('lang') || 'en').toLowerCase();
+        const age = (urlParams.get('age') || 'o').toLowerCase(); // 'o' for older, 'y' for younger
 
         const storageKey = `rakhi_state_${btoa(currentQuery || 'default')}`;
 
-        // Determine correct suffix for the subtitle display and audio
-        let suffix = "";
-        if (lang.toLowerCase() === 'tel') {
-            suffix = (age.toLowerCase() === 'o') ? " Akka" : " Chelli";
-        } else {
-            suffix = (age.toLowerCase() === 'o') ? " (Akka)" : " (Chelli)";
-        }
+        // Localization configurations for Indian languages
+        const langData = {
+            tel: {
+                code: 'te-IN',
+                sister: age === 'o' ? 'అక్క' : 'చెల్లి',
+                brother: age === 'o' ? 'అన్నయ్య' : 'తమ్ముడు',
+                getAudio: (s, b) => `హ్యాపీ రాక్షా బంధన్, ${to} ${s}! ప్రేమతో, మీ ${from} (${b}) ద్వారా పంపబడినది.`
+            },
+            hin: {
+                code: 'hi-IN',
+                sister: age === 'o' ? 'दीदी' : 'छोटी',
+                brother: age === 'o' ? 'भैया' : 'छोटा भाई',
+                getAudio: (s, b) => `हैप्पी रक्षाबंधन, ${to} ${s}! प्यार से, आपके ${b} ${from} द्वारा भेजा गया।`
+            },
+            tam: {
+                code: 'ta-IN',
+                sister: age === 'o' ? 'அக்கா' : 'தங்கை',
+                brother: age === 'o' ? 'அண்ணா' : 'தம்பி',
+                getAudio: (s, b) => `இனிய ரக்ஷா பந்தன் நல்வாழ்த்துகள், ${to} ${s}! அன்புடன், உங்கள் ${b} ${from}.`
+            },
+            kan: {
+                code: 'kn-IN',
+                sister: age === 'o' ? 'ಅಕ್ಕ' : 'ತಂಗಿ',
+                brother: age === 'o' ? 'ಅಣ್ಣ' : 'ತಮ್ಮ',
+                getAudio: (s, b) => `ಹ್ಯಾಪಿ ರಕ್ಷಾ ಬಂಧನ್, ${to} ${s}! ಪ್ರೀತಿಯಿಂದ, ನಿಮ್ಮ ${b} ${from}.`
+            },
+            mal: {
+                code: 'ml-IN',
+                sister: age === 'o' ? 'ചേച്ചി' : 'അനുജത്തി',
+                brother: age === 'o' ? 'ഏട്ടൻ' : 'അനുജൻ',
+                getAudio: (s, b) => `ഹാപ്പി രക്ഷാബന്ധൻ, ${to} ${s}! സ്നേഹത്തോടെ, നിങ്ങളുടെ ${b} ${from}.`
+            },
+            ben: {
+                code: 'bn-IN',
+                sister: age === 'o' ? 'দিদি' : 'বোন',
+                brother: age === 'o' ? 'দা' : 'ভাই',
+                getAudio: (s, b) => `শুভ রক্ষা বন্ধন, ${to} ${s}! ভালোবাসাসহ, আপনার ${b} ${from}।`
+            },
+            mar: {
+                code: 'mr-IN',
+                sister: age === 'o' ? 'తाई' : 'बहीण',
+                brother: age === 'o' ? 'दादा' : 'भाऊ',
+                getAudio: (s, b) => `हॅपी रक्षाबंधन, ${to} ${s}! प्रेमाने, तुमचा ${b} ${from}.`
+            },
+            en: {
+                code: 'en-IN',
+                sister: age === 'o' ? 'Akka' : 'Chelli',
+                brother: 'Brother',
+                getAudio: (s, b) => `Happy Raksha Bandhan, ${to} ${s}! Sent with love, by ${from}.`
+            }
+        };
 
-        const displayNameWithSuffix = `${to}${suffix}`;
+        const currentLangConfig = langData[lang] || langData['en'];
+        const visualSuffix = ` (${currentLangConfig.sister})`;
+        const displayNameWithSuffix = `${to}${visualSuffix}`;
 
         document.getElementById('subTitle').innerText = `To my dearest ${displayNameWithSuffix}`;
         document.getElementById('fromNameTag').innerText = from;
@@ -324,30 +370,19 @@
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('quoteText').innerText = `"${randomQuote}"`;
 
-        // Configure native spoken greeting based on lang parameter
+        // Configure speech synthesis with specific native language profiles
         let preloadedUtterance = null;
-        let targetLangCode = 'en-IN';
-
         if ('speechSynthesis' in window) {
-            let spokenGreeting = "";
-
-            if (lang.toLowerCase() === 'tel') {
-                targetLangCode = 'te-IN';
-                // Native Telugu slang pronunciation phrasing string
-                spokenGreeting = `Hrudaya purvaka Raksha Bandhan subhakankshalu, ${displayNameWithSuffix}! ... Itlu nee tammudu, ${from}.`;
-            } else {
-                targetLangCode = 'en-IN';
-                spokenGreeting = `Happy Raksha Bandhan, ${displayNameWithSuffix}! ... Sent with love, by ${from}.`;
-            }
-
+            const spokenGreeting = currentLangConfig.getAudio(currentLangConfig.sister, currentLangConfig.brother);
+            
             preloadedUtterance = new SpeechSynthesisUtterance(spokenGreeting);
-            preloadedUtterance.rate = 0.92;
+            preloadedUtterance.rate = 0.90;
             preloadedUtterance.pitch = 1.05;
 
             const setupNativeVoice = () => {
                 const voices = window.speechSynthesis.getVoices();
-                const matchedVoice = voices.find(v => v.lang === targetLangCode || v.lang.includes(targetLangCode.split('-')[0])) || 
-                                     voices.find(v => v.lang === 'en-IN') || voices[0];
+                const matchedVoice = voices.find(v => v.lang === currentLangConfig.code || v.lang.includes(currentLangConfig.code.split('-')[0])) || 
+                                     voices.find(v => v.lang.includes('en')) || voices[0];
                 if (matchedVoice) preloadedUtterance.voice = matchedVoice;
             };
 
