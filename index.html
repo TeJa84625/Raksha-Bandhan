@@ -1,7 +1,7 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Raksha Bandhan</title>
+    <title>Happy Raksha Bandhan 2026</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Cinzel:wght@600;700&amp;display=swap" rel="stylesheet">
     <!-- Canvas Confetti -->
@@ -34,6 +34,7 @@
             width: 100vw;
             height: 100svh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -68,6 +69,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            margin-bottom: 14px;
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -183,18 +185,24 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 12px;
             background: linear-gradient(135deg, #1e1233, #2b1847);
         }
 
-        .prize-amount {
-            font-size: 1.9rem;
+        .prize-content {
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--text-main);
+            line-height: 1.3;
+            word-break: break-word;
         }
 
-        .prize-amount span {
-            font-size: 0.75rem;
+        .prize-content span {
+            display: block;
+            font-size: 0.72rem;
             color: var(--gold);
+            margin-top: 4px;
+            font-weight: 600;
         }
 
         canvas {
@@ -205,6 +213,26 @@
             z-index: 2;
             cursor: pointer;
             touch-action: none;
+        }
+
+        /* Outside container custom link styling */
+        .custom-link-box {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            font-size: 0.78rem;
+        }
+
+        .custom-link-box a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--gold);
+            transition: opacity 0.2s;
+        }
+
+        .custom-link-box a:hover {
+            opacity: 0.8;
         }
 
         .footer {
@@ -240,8 +268,8 @@
                 <div class="scratch-instruction">✨ Scratch thoroughly to reveal! ✨</div>
                 <div class="scratch-frame">
                     <div class="prize-layer">
-                        <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">E-Voucher Gift</div>
-                        <div class="prize-amount" id="displayAmount">₹1,000 <span>INR</span></div>
+                        <div style="font-size:0.68rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Special Surprise</div>
+                        <div class="prize-content" id="displayPrizeContent">Dinner on me tonight! 🍕 <span>Surprise Unlocked</span></div>
                     </div>
                     <canvas id="scratchCanvas"></canvas>
                 </div>
@@ -254,6 +282,11 @@
         </a>
 
         <div class="footer">Made with ❤️ by <strong id="footerName">Sender (Sister)</strong></div>
+    </div>
+
+    <!-- Custom Link Positioned Outside at the Very Bottom Center -->
+    <div class="custom-link-box">
+        <a href="custom.html" id="customPageLink">Want to create your own card? Click here ✨</a>
     </div>
 
     <script>
@@ -289,18 +322,24 @@
             }
         }
 
-        const to = urlParams.get('to') || 'Recipient';
-        const from = urlParams.get('from') || 'Sender';
-        const amount = urlParams.get('amount') || '1,000';
-        const redirectUrl = urlParams.get('url');
-        const lang = (urlParams.get('lang') || 'en').toLowerCase();
-        const age = (urlParams.get('age') || 'o').toLowerCase(); // 'o' for older, 'y' for younger
-        const gender = (urlParams.get('gender') || 'm').toLowerCase(); // 'm' = To Male (Brother) / From Female (Sister), 'f' = To Female (Sister) / From Male (Brother)
-        const customQuote = urlParams.get('quote');
+        // Short Parameter Mapping
+        const to = urlParams.get('t') || 'Recipient';
+        const from = urlParams.get('f') || 'Sender';
+        const scratchContent = urlParams.get('sc') || 'A special gift just for you! 🎁';
+        const redirectUrl = urlParams.get('u');
+        const lang = (urlParams.get('l') || 'en').toLowerCase();
+        const age = (urlParams.get('ag') || 'o').toLowerCase(); // 'o' for older, 'y' for younger
+        const gender = (urlParams.get('g') || 'm').toLowerCase(); // 'm' = Male, 'f' = Female
+        const customQuote = urlParams.get('q');
+
+        // Forward query params to custom.html if they exist
+        if (currentQuery) {
+            document.getElementById('customPageLink').href = `custom.html?${currentQuery}`;
+        }
 
         const storageKey = `rakhi_state_${btoa(currentQuery || 'default')}`;
 
-        // Language config where gender='m' means To=Male/Brother, From=Female/Sister, and gender='f' means To=Female/Sister, From=Male/Brother
+        // Language config mapping short parameters
         const langData = {
             tel: {
                 code: 'te-IN',
@@ -359,7 +398,9 @@
         document.getElementById('senderRoleTag').innerText = currentLangConfig.senderTerm + ',';
         document.getElementById('fromNameTag').innerText = from;
         document.getElementById('footerName').innerText = `${from} (${currentLangConfig.senderTerm})`;
-        document.getElementById('displayAmount').innerHTML = `₹${amount} <span>INR</span>`;
+        
+        // Render dynamic scratch content safely
+        document.getElementById('displayPrizeContent').innerHTML = `${decodeURIComponent(scratchContent)} <span>Surprise Unlocked</span>`;
 
         const claimBtn = document.getElementById('claimBtn');
         const hasValidUrl = redirectUrl && redirectUrl.trim() !== '';
@@ -367,7 +408,7 @@
             claimBtn.href = redirectUrl;
         }
 
-        // Universal Quote Logic (Custom Query Param or Random Fallback)
+        // Universal Quote Logic
         const activeQuote = customQuote ? decodeURIComponent(customQuote) : quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('quoteText').innerText = `"${activeQuote}"`;
 
