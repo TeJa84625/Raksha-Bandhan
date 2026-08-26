@@ -555,7 +555,7 @@
             if(logo) apiParams.append('logo', encodeURIComponent(logo));
 
             // Construct exact qrzip.vercel.app/qrgen.html?d?url target link format
-            const qrZipDownloadUrl = `https://qrzip.vercel.app/qrgen.html?${encodeURIComponent(cardTargetUrl)}&${apiParams.toString()}`;
+            const qrZipDownloadUrl = `https://qrzip.vercel.app/qrgen.html?d?${encodeURIComponent(cardTargetUrl)}&${apiParams.toString()}`;
             
             // Set Download QR Code Button Link
             document.getElementById('downloadQRBtn').href = qrZipDownloadUrl;
