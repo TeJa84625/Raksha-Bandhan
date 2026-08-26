@@ -223,11 +223,11 @@
     <div class="card-container">
         <div class="badge">✨ Raksha Bandhan Special</div>
         <h1>Happy Raksha Bandhan</h1>
-        <p class="subtitle" id="subTitle">To my dearest Sister</p>
+        <p class="subtitle" id="subTitle">To my dearest Sibling</p>
 
         <div class="message-box">
             <span id="quoteText">"Thank you for always being my pillar of strength and support. Wishing you endless happiness!"</span>
-            <span class="sender-tag">— By <span id="brotherRoleTag">Brother</span> <span id="fromNameTag">Brother</span></span>
+            <span class="sender-tag">— By <span id="senderRoleTag">Sender</span> <span id="fromNameTag">Sender</span></span>
         </div>
 
         <div class="gift-box-wrapper">
@@ -255,13 +255,13 @@
             Claim the Gift ✨
         </a>
 
-        <div class="footer">Made with ❤️ by <strong id="footerName">Brother</strong></div>
+        <div class="footer">Made with ❤️ by <strong id="footerName">Sender</strong></div>
     </div>
 
     <script>
         const quotes = [
-            "Having a sister is like having a lifelong friend you can never truly get rid of. No matter what, you know they'll always be there!",
-            "Side by side or miles apart, sisters are forever connected by the heart. Wishing you a wonderful Raksha Bandhan!",
+            "Having a sibling is like having a lifelong friend you can never truly get rid of. No matter what, you know they'll always be there!",
+            "Side by side or miles apart, siblings are forever connected by the heart. Wishing you a wonderful Raksha Bandhan!",
             "Thank you for sharing your patience, your secrets, and tolerating me every time. Happy Rakhi!",
             "From sharing childhood memories to cheering for each other's dreams—growing up with you has been the best adventure."
         ];
@@ -291,82 +291,75 @@
             }
         }
 
-        const to = urlParams.get('to') || 'Sister';
-        const from = urlParams.get('from') || 'Brother';
+        const to = urlParams.get('to') || 'Recipient';
+        const from = urlParams.get('from') || 'Sender';
         const amount = urlParams.get('amount') || '1,000';
         const redirectUrl = urlParams.get('url');
         const lang = (urlParams.get('lang') || 'en').toLowerCase();
         const age = (urlParams.get('age') || 'o').toLowerCase(); // 'o' for older, 'y' for younger
+        const gender = (urlParams.get('gender') || 'm').toLowerCase(); // 'm' = To Male (Brother) / From Female (Sister), 'f' = To Female (Sister) / From Male (Brother)
 
         const storageKey = `rakhi_state_${btoa(currentQuery || 'default')}`;
 
-        // Comprehensive Indian Language Configuration Profiles
+        // Language config where gender='m' means To=Male/Brother, From=Female/Sister, and gender='f' means To=Female/Sister, From=Male/Brother
         const langData = {
             tel: {
                 code: 'te-IN',
-                sister: age === 'o' ? 'అక్క' : 'చెల్లి',
-                brother: age === 'o' ? 'అన్నయ్య' : 'తమ్ముడు',
-                greeting: 'హృదయపూర్వক రక్షా బంధన్ శుభాకాంక్షలు',
-                getAudio: (s, b) => `హృదయపూర్వక రక్షా బంధన్ శుభాకాంక్షలు, ${to} ${s}! ప్రేమతో, మీ ${b} ${from}.`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'అన్నయ్య' : 'తమ్ముడు') : (age === 'o' ? 'అక్క' : 'చెల్లి'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'చెల్లి' : 'అక్క') : (age === 'o' ? 'తమ్ముడు' : 'అన్నయ్య'),
+                getAudio: (recip, send) => `హృదయపూర్వక రక్షా బంధన్ శుభాకాంక్షలు, ${to} ${recip}! ప్రేమతో, మీ ${send} ${from}.`
             },
             hin: {
                 code: 'hi-IN',
-                sister: age === 'o' ? 'दीदी' : 'छोटी',
-                brother: age === 'o' ? 'भैया' : 'छोटा भाई',
-                greeting: 'हृदयपूर्वक रक्षा बंधन की शुभकामनाएं',
-                getAudio: (s, b) => `हृदयपूर्वक रक्षा बंधन की शुभकामनाएं, ${to} ${s}! प्यार से, आपके ${b} ${from} द्वारा।`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'भैया' : 'छोटा भाई') : (age === 'o' ? 'दीदी' : 'छोटी'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'छोटी' : 'दीदी') : (age === 'o' ? 'छोटा भाई' : 'भैया'),
+                getAudio: (recip, send) => `हृदयपूर्वक रक्षा बंधन की शुभकामनाएं, ${to} ${recip}! प्यार से, आपके ${send} ${from} द्वारा।`
             },
             tam: {
                 code: 'ta-IN',
-                sister: age === 'o' ? 'அக்கா' : 'தங்கை',
-                brother: age === 'o' ? 'அண்ணா' : 'தம்பி',
-                greeting: 'இதயப்பூர்வமான ரக்ஷா பந்தன் நல்வாழ்த்துகள்',
-                getAudio: (s, b) => `இதயப்பூர்வமான ரக்ஷா பந்தன் நல்வாழ்த்துகள், ${to} ${s}! அன்புடன், உங்கள் ${b} ${from}.`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'அண்ணா' : 'தம்பி') : (age === 'o' ? 'அக்கா' : 'தங்கை'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'தங்கை' : 'அக்கா') : (age === 'o' ? 'தம்பி' : 'அண்ணா'),
+                getAudio: (recip, send) => `இதயப்பூர்வமான ரக்ஷா பந்தன் நல்வாழ்த்துகள், ${to} ${recip}! அன்புடன், உங்கள் ${send} ${from}.`
             },
             kan: {
                 code: 'kn-IN',
-                sister: age === 'o' ? 'ಅಕ್ಕ' : 'ತಂಗಿ',
-                brother: age === 'o' ? 'ಅಣ್ಣ' : 'ತಮ್ಮ',
-                greeting: 'ഹൃദയപൂര്‍വ്വക രക്ഷാബന്ധന്‍ ആശംസകള്‍', // fallback Kannada phrase mapped correctly
-                getAudio: (s, b) => `ಹೃದಯಪೂರ್ವಕ ರಕ್ಷಾ ಬಂಧನ್ ಶುಭಾಶಯಗಳು, ${to} ${s}! ಪ್ರೀತಿಯಿಂದ, ನಿಮ್ಮ ${b} ${from}.`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'ಅಣ್ಣ' : 'ತಮ್ಮ') : (age === 'o' ? 'ಅಕ್ಕ' : 'ತಂಗಿ'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'ತಂಗಿ' : 'ಅಕ್ಕ') : (age === 'o' ? 'ತಮ್ಮ' : 'ಅಣ್ಣ'),
+                getAudio: (recip, send) => `ಹೃದಯಪೂರ್ವಕ ರಕ್ಷಾ ಬಂಧನ್ ಶುಭಾಶಯಗಳು, ${to} ${recip}! ಪ್ರೀತಿಯಿಂದ, ನಿಮ್ಮ ${send} ${from}.`
             },
             mal: {
                 code: 'ml-IN',
-                sister: age === 'o' ? 'ചേച്ചി' : 'അനുജത്തി',
-                brother: age === 'o' ? 'ഏട്ടൻ' : 'അനുജൻ',
-                greeting: 'ഹൃദയപൂർവ്വം രക്ഷാബന്ധൻ ആശംസകൾ',
-                getAudio: (s, b) => `ഹൃദയപൂർവ്വം രക്ഷാബന്ധൻ ആശംസകൾ, ${to} ${s}! സ്നേഹത്തോടെ, നിങ്ങളുടെ ${b} ${from}.`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'ഏട്ടൻ' : 'അനുജൻ') : (age === 'o' ? 'ചേച്ചി' : 'അനുജത്തി'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'അനുജത്തി' : 'ചേച്ചി') : (age === 'o' ? 'അനുജൻ' : 'ഏട്ടൻ'),
+                getAudio: (recip, send) => `ഹൃദയപൂർവ്വം രക്ഷാബന്ധൻ ആശംസകൾ, ${to} ${recip}! സ്നേഹത്തോടെ, നിങ്ങളുടെ ${send} ${from}.`
             },
             ben: {
                 code: 'bn-IN',
-                sister: age === 'o' ? 'দিদি' : 'বোন',
-                brother: age === 'o' ? 'দাদা' : 'ভাই',
-                greeting: 'হৃদয়পূর্ণ রক্ষা বন্ধনের শুভেচ্ছা',
-                getAudio: (s, b) => `হৃদয়পূর্ণ রক্ষা বন্ধনের শুভেচ্ছা, ${to} ${s}! ভালোবাসাসহ, আপনার ${b} ${from}।`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'দাদা' : 'ভাই') : (age === 'o' ? 'দিদি' : 'বোন'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'বোন' : 'দিদি') : (age === 'o' ? 'ভাই' : 'দাদা'),
+                getAudio: (recip, send) => `হৃদয়পূর্ণ রক্ষা বন্ধনের শুভেচ্ছা, ${to} ${recip}! ভালোবাসাসহ, আপনার ${send} ${from}।`
             },
             mar: {
                 code: 'mr-IN',
-                sister: age === 'o' ? 'ताई' : 'बहीण',
-                brother: age === 'o' ? 'दादा' : 'भाऊ',
-                greeting: 'हृदयपूर्वक रक्षाबंधनच्या शुभेच्छा',
-                getAudio: (s, b) => `हृदयपूर्वक रक्षाबंधनच्या शुभेच्छा, ${to} ${s}! प्रेमाने, तुमचा ${b} ${from}.`
+                recipientTerm: gender === 'm' ? (age === 'o' ? 'दादा' : 'भाऊ') : (age === 'o' ? 'ताई' : 'बहीण'),
+                senderTerm: gender === 'm' ? (age === 'o' ? 'बहीण' : 'ताई') : (age === 'o' ? 'भाऊ' : 'दादा'),
+                getAudio: (recip, send) => `हृदयपूर्वक रक्षाबंधनच्या शुभेच्छा, ${to} ${recip}! प्रेमाने, तुमचा ${send} ${from}.`
             },
             en: {
                 code: 'en-IN',
-                sister: age === 'o' ? 'Akka' : 'Chelli',
-                brother: age === 'o' ? 'Brother' : 'Brother',
-                greeting: 'Heartfelt Raksha Bandhan Wishes',
-                getAudio: (s, b) => `Heartfelt Raksha Bandhan wishes, ${to} ${s}! Sent with love, by your ${b}, ${from}.`
+                recipientTerm: gender === 'm' ? 'Brother' : (age === 'o' ? 'Akka' : 'Chelli'),
+                senderTerm: gender === 'm' ? 'Sister' : 'Brother',
+                getAudio: (recip, send) => `Heartfelt Raksha Bandhan wishes, ${to} ${recip}! Sent with love, by your ${send}, ${from}.`
             }
         };
 
         const currentLangConfig = langData[lang] || langData['en'];
-        const displayNameWithSuffix = `${to} (${currentLangConfig.sister})`;
+        const displayNameWithSuffix = `${to} (${currentLangConfig.recipientTerm})`;
 
         document.getElementById('subTitle').innerText = `To my dearest ${displayNameWithSuffix}`;
-        document.getElementById('brotherRoleTag').innerText = currentLangConfig.brother + ',';
+        document.getElementById('senderRoleTag').innerText = currentLangConfig.senderTerm + ',';
         document.getElementById('fromNameTag').innerText = from;
-        document.getElementById('footerName').innerText = `${from} (${currentLangConfig.brother})`;
+        document.getElementById('footerName').innerText = `${from} (${currentLangConfig.senderTerm})`;
         document.getElementById('displayAmount').innerHTML = `₹${amount} <span>INR</span>`;
 
         const claimBtn = document.getElementById('claimBtn');
@@ -378,13 +371,13 @@
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('quoteText').innerText = `"${randomQuote}"`;
 
-        // Crystal clear native audio engine setup
+        // Native audio setup
         let preloadedUtterance = null;
         if ('speechSynthesis' in window) {
-            const spokenGreeting = currentLangConfig.getAudio(currentLangConfig.sister, currentLangConfig.brother);
+            const spokenGreeting = currentLangConfig.getAudio(currentLangConfig.recipientTerm, currentLangConfig.senderTerm);
             
             preloadedUtterance = new SpeechSynthesisUtterance(spokenGreeting);
-            preloadedUtterance.rate = 0.85; // Slower rate for maximum clarity
+            preloadedUtterance.rate = 0.85;
             preloadedUtterance.pitch = 1.0;
 
             const setupNativeVoice = () => {
