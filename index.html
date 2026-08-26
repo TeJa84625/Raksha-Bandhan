@@ -272,11 +272,15 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         
-        // Check for parameter change / reset flag (?r)
-        const currentQuery = window.location.search.replace(/[?&]r(=[^&]*)?/g, '');
+        const cleanParams = new URLSearchParams(window.location.search);
+        cleanParams.delete('r');
+        const currentQuery = cleanParams.toString();
         const lastQuery = localStorage.getItem('rakhi_last_query');
 
-        if (lastQuery !== currentQuery || urlParams.has('r')) {
+        const hasResetFlag = urlParams.has('r');
+        const parametersChanged = (lastQuery !== currentQuery);
+
+        if (parametersChanged || hasResetFlag) {
             Object.keys(localStorage).forEach(key => {
                 if (key.startsWith('rakhi_state_')) {
                     localStorage.removeItem(key);
@@ -284,7 +288,7 @@
             });
             localStorage.setItem('rakhi_last_query', currentQuery);
             
-            if (urlParams.has('r')) {
+            if (hasResetFlag) {
                 urlParams.delete('r');
                 const newRelativePathQuery = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
                 window.history.replaceState(null, '', newRelativePathQuery);
@@ -312,25 +316,34 @@
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('quoteText').innerText = `"${randomQuote}"`;
 
-        function triggerHaptic(pattern) {
-            if ('vibrate' in navigator) { try { navigator.vibrate(pattern); } catch (e) {} }
-        }
+        // Pre-initialize Speech Utterance on page load so it is ready instantly
+        let preloadedUtterance = null;
+        if ('speechSynthesis' in window) {
+            const textToSpeak = `Happy Raksha Bandhan, ${to}! Sent with love by ${from}.`;
+            preloadedUtterance = new SpeechSynthesisUtterance(textToSpeak);
+            preloadedUtterance.rate = 0.95;
+            preloadedUtterance.pitch = 1.1;
 
-        // Text-to-Speech Voice Greeting Function
-        function playVoiceGreeting() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const textToSpeak = `Happy Raksha Bandhan, ${to}! Sent with love by ${from}.`;
-                const utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.rate = 0.95;
-                utterance.pitch = 1.1;
-                
+            const loadVoices = () => {
                 const voices = window.speechSynthesis.getVoices();
                 const preferredVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Female')) || voices[0];
-                if (preferredVoice) utterance.voice = preferredVoice;
-
-                window.speechSynthesis.speak(utterance);
+                if (preferredVoice) preloadedUtterance.voice = preferredVoice;
+            };
+            loadVoices();
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = loadVoices;
             }
+        }
+
+        function playVoiceGreeting() {
+            if ('speechSynthesis' in window && preloadedUtterance) {
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(preloadedUtterance);
+            }
+        }
+
+        function triggerHaptic(pattern) {
+            if ('vibrate' in navigator) { try { navigator.vibrate(pattern); } catch (e) {} }
         }
 
         // Restore state check on page load
@@ -457,7 +470,7 @@
 
                 triggerHaptic([60, 120, 180]);
 
-                // Play the audio greeting when fully scratched!
+                // Fires instantly without lag because it was pre-configured on load!
                 playVoiceGreeting();
 
                 if (hasValidUrl) {
