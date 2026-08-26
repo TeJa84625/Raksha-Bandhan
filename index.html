@@ -316,22 +316,37 @@
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('quoteText').innerText = `"${randomQuote}"`;
 
-        // Pre-initialize Speech Utterance on page load so it is ready instantly
+        // Optimized Indian Language / Accent Speech Setup
         let preloadedUtterance = null;
         if ('speechSynthesis' in window) {
-            const textToSpeak = `Happy Raksha Bandhan, ${to}! Sent with love by ${from}.`;
+            // Added slight pauses using punctuation for natural delivery style
+            const textToSpeak = `Happy Raksha Bandhan, ${to}! ... Sent with love, by ${from}.`;
             preloadedUtterance = new SpeechSynthesisUtterance(textToSpeak);
-            preloadedUtterance.rate = 0.95;
-            preloadedUtterance.pitch = 1.1;
+            preloadedUtterance.rate = 0.92; // Slightly slower for natural clarity
+            preloadedUtterance.pitch = 1.05;
 
-            const loadVoices = () => {
+            const setupIndianVoice = () => {
                 const voices = window.speechSynthesis.getVoices();
-                const preferredVoice = voices.find(v => v.lang.includes('en') && v.name.includes('Female')) || voices[0];
-                if (preferredVoice) preloadedUtterance.voice = preferredVoice;
+                
+                // Priority order: 
+                // 1. Telugu local voice (te-IN) if installed
+                // 2. Indian English voice (en-IN) for natural Indian pronunciation of names/festivals
+                // 3. Fallback standard female voice
+                const indianVoice = voices.find(v => v.lang === 'te-IN') || 
+                                    voices.find(v => v.lang === 'en-IN') || 
+                                    voices.find(v => v.lang.includes('en') && (v.name.includes('India') || v.name.includes('Female'))) ||
+                                    voices[0];
+                                    
+                if (indianVoice) {
+                    preloadedUtterance.voice = indianVoice;
+                    // If Telugu voice pack is found directly, adapt text for native Telugu script option if desired, 
+                    // otherwise English text with Indian accent yields crystal-clear pronunciation.
+                }
             };
-            loadVoices();
+
+            setupIndianVoice();
             if (window.speechSynthesis.onvoiceschanged !== undefined) {
-                window.speechSynthesis.onvoiceschanged = loadVoices;
+                window.speechSynthesis.onvoiceschanged = setupIndianVoice;
             }
         }
 
@@ -470,7 +485,7 @@
 
                 triggerHaptic([60, 120, 180]);
 
-                // Fires instantly without lag because it was pre-configured on load!
+                // Fires instantly with clear Indian voice accent/pronunciation!
                 playVoiceGreeting();
 
                 if (hasValidUrl) {
